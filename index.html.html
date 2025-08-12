@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundacja ADAPA - Stwórz stronę internetową dla każdego</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <style>
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css');
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .glass { backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.1); }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .site-preview { 
+            background: #f8fafc; 
+            border: 2px dashed #e2e8f0; 
+            min-height: 400px;
+            transition: all 0.3s ease;
+        }
+        .site-preview.has-content { 
+            border: 2px solid #4ade80; 
+            background: white;
+        }
+        .template-card { 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+        }
+        .template-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .template-card.selected {
+            border: 3px solid #3B82F6;
+            background: #EBF8FF;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">🏛️ Fundacja ADAPA</h1>
+            <div id="nav-buttons">
+                <button onclick="showLogin()" class="bg-white bg-opacity-20 px-4 py-2 rounded mr-2 hover:bg-opacity-30 transition">Zaloguj się</button>
+                <button onclick="showRegister()" class="bg-white bg-opacity-20 px-4 py-2 rounded hover:bg-opacity-30 transition">Zarejestruj się</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="container mx-auto px-4 py-8">
+        
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="text-center fade-in">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6">Stwórz stronę internetową dla każdego</h2>
+                <p class="text-xl text-gray-600 mb-8">Fundacja ADAPA pomaga tworzyć profesjonalne strony internetowe w kilka minut. Idealne dla muzeów, galerii, fundacji, organizacji pozarządowych i projektów społecznych.</p>
+                <div class="grid md:grid-cols-3 gap-8 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div class="text-4xl mb-4">📝</div>
+                        <h3 class="text-xl font-semibold mb-2">Prosty Formularz</h3>
+                        <p class="text-gray-600">Wypełnij dane, wybierz szablon, dodaj zdjęcia</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div class="text-4xl mb-4">✅</div>
+                        <h3 class="text-xl font-semibold mb-2">Szybka Akceptacja</h3>
+                        <p class="text-gray-600">Po zatwierdzeniu przez moderatora - od razu online</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div class="text-4xl mb-4">🌐</div>
+                        <h3 class="text-xl font-semibold mb-2">Twój Własny Adres</h3>
+                        <p class="text-gray-600">nazwa.adapa.org.pl - bezpłatnie dla organizacji</p>
+                    </div>
+                </div>
+                <button onclick="showRegister()" class="bg-blue-600 text-white px-8 py-3 rounded-lg text-xl hover:bg-blue-700 transition">Zacznij Teraz</button>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-form" class="hidden fade-in">
+            <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-2xl font-bold mb-6 text-center">Zaloguj się</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">E-mail</label>
+                        <input type="email" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="login-email">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Hasło</label>
+                        <input type="password" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="login-password">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Zaloguj się</button>
+                </form>
+                <div class="bg-gray-100 p-4 rounded-lg mt-4 text-sm">
+                    <p class="font-semibold mb-2">Dane testowe administratora:</p>
+                    <p>E-mail: admin@adapa.org.pl</p>
+                    <p>Hasło: admin2024</p>
+                </div>
+                <p class="text-center mt-4">
+                    <button onclick="showRegister()" class="text-blue-600 hover:underline">Nie masz konta? Zarejestruj się</button>
+                </p>
+                <p class="text-center mt-2">
+                    <button onclick="showWelcome()" class="text-gray-600 hover:underline">← Powrót do strony głównej</button>
+                </p>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="register-form" class="hidden fade-in">
+            <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-2xl font-bold mb-6 text-center">Zarejestruj się</h2>
+                <form onsubmit="handleRegister(event)">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Imię i Nazwisko / Nazwa Organizacji</label>
+                        <input type="text" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="register-name">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">E-mail</label>
+                        <input type="email" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="register-email">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Nazwa użytkownika</label>
+                        <input type="text" required pattern="[a-zA-Z0-9_-]+" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="register-username" placeholder="twoja-nazwa">
+                        <small class="text-gray-500">Twój adres strony: <span id="url-preview">nazwa.adapa.org.pl</span></small>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Hasło</label>
+                        <input type="password" required minlength="6" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="register-password">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Zarejestruj się</button>
+                </form>
+                <p class="text-center mt-4">
+                    <button onclick="showLogin()" class="text-blue-600 hover:underline">Masz już konto? Zaloguj się</button>
+                </p>
+                <p class="text-center mt-2">
+                    <button onclick="showWelcome()" class="text-gray-600 hover:underline">← Powrót do strony głównej</button>
+                </p>
+            </div>
+        </div>
+
+        <!-- User Dashboard -->
+        <div id="user-dashboard" class="hidden fade-in">
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Witaj, <span id="user-name-display"></span>!</h2>
+                        <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Wyloguj się</button>
+                    </div>
+                    
+                    <div id="no-sites" class="text-center py-12">
+                        <div class="text-6xl mb-4">🌐</div>
+                        <h3 class="text-xl font-semibold mb-4">Nie masz jeszcze żadnej strony</h3>
+                        <p class="text-gray-600 mb-6">Kliknij poniżej, aby stworzyć swoją pierwszą stronę internetową</p>
+                        <button onclick="showSiteCreator()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">Stwórz Pierwszą Stronę</button>
+                    </div>
+
+                    <div id="existing-sites" class="hidden">
+                        <h3 class="text-xl font-semibold mb-4">Twoje strony</h3>
+                        <div id="sites-list" class="space-y-4"></div>
+                        <button onclick="showSiteCreator()" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">+ Stwórz Nową Stronę</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Template Selection -->
+        <div id="template-selection" class="hidden fade-in">
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Wybierz szablon dla swojej strony</h2>
+                        <button onclick="showDashboard()" class="text-gray-600 hover:text-gray-800">← Powrót</button>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="template-card bg-white border-2 border-gray-200 rounded-lg p-6 text-center" onclick="selectTemplate('museum')">
+                            <div class="text-4xl mb-4">🏛️</div>
+                            <h3 class="text-xl font-semibold mb-2">Muzeum</h3>
+                            <p class="text-gray-600 text-sm mb-4">Idealny dla muzeów, galerii sztuki i wystaw</p>
+                            <div class="text-xs text-left bg-gray-50 p-3 rounded">
+                                <strong>Zawiera:</strong><br>
+                                • Sekcję kolekcji<br>
+                                • Kalendarz wystaw<br>
+                                • Godziny otwarcia<br>
+                                • Cennik biletów
+                            </div>
+                        </div>
+
+                        <div class="template-card bg-white border-2 border-gray-200 rounded-lg p-6 text-center" onclick="selectTemplate('ngo')">
+                            <div class="text-4xl mb-4">🤝</div>
+                            <h3 class="text-xl font-semibold mb-2">Organizacja NGO</h3>
+                            <p class="text-gray-600 text-sm mb-4">Dla fundacji i organizacji pozarządowych</p>
+                            <div class="text-xs text-left bg-gray-50 p-3 rounded">
+                                <strong>Zawiera:</strong><br>
+                                • Misję i wizję<br>
+                                • Projekty i działania<br>
+                                • Możliwość wsparcia<br>
+                                • Zespół i kontakt
+                            </div>
+                        </div>
+
+                        <div class="template-card bg-white border-2 border-gray-200 rounded-lg p-6 text-center" onclick="selectTemplate('business')">
+                            <div class="text-4xl mb-4">💼</div>
+                            <h3 class="text-xl font-semibold mb-2">Działalność</h3>
+                            <p class="text-gray-600 text-sm mb-4">Dla małych firm i przedsiębiorców</p>
+                            <div class="text-xs text-left bg-gray-50 p-3 rounded">
+                                <strong>Zawiera:</strong><br>
+                                • Usługi i oferty<br>
+                                • Portfolio prac<br>
+                                • Opinie klientów<br>
+                                • Formularz kontaktowy
+                            </div>
+                        </div>
+
+                        <div class="template-card bg-white border-2 border-gray-200 rounded-lg p-6 text-center" onclick="selectTemplate('cultural')">
+                            <div class="text-4xl mb-4">🎭</div>
+                            <h3 class="text-xl font-semibold mb-2">Kultura</h3>
+                            <p class="text-gray-600 text-sm mb-4">Dla ośrodków kultury i teatrów</p>
+                            <div class="text-xs text-left bg-gray-50 p-3 rounded">
+                                <strong>Zawiera:</strong><br>
+                                • Repertuar i program<br>
+                                • Artyści i zespoły<br>
+                                • Rezerwacja miejsc<br>
+                                • Historia placówki
+                            </div>
+                        </div>
+
+                        <div class="template-card bg-white border-2 border-gray-200 rounded-lg p-6 text-center" onclick="selectTemplate('educational')">
+                            <div class="text-4xl mb-4">📚</div>
+                            <h3 class="text-xl font-semibold mb-2">Edukacja</h3>
+                            <p class="text-gray-600 text-sm mb-4">Dla szkół i instytucji edukacyjnych</p>
+                            <div class="text-xs text-left bg-gray-50 p-3 rounded">
+                                <strong>Zawiera:</strong><br>
+                                • Program nauczania<br>
+                                • Kadra pedagogiczna<br>
+                                • Aktualności szkolne<br>
+                                • Plan zajęć
+                            </div>
+                        </div>
+
+                        <div class="template-card bg-white border-2 border-gray-200 rounded-lg p-6 text-center" onclick="selectTemplate('personal')">
+                            <div class="text-4xl mb-4">👤</div>
+                            <h3 class="text-xl font-semibold mb-2">Portfolio</h3>
+                            <p class="text-gray-600 text-sm mb-4">Dla artystów i freelancerów</p>
+                            <div class="text-xs text-left bg-gray-50 p-3 rounded">
+                                <strong>Zawiera:</strong><br>
+                                • Galeria prac<br>
+                                • O artyście<br>
+                                • Doświadczenie<br>
+                                • Dane kontaktowe
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="selected-template" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                        <p class="text-blue-800"><strong>Wybrany szablon:</strong> <span id="selected-template-name"></span></p>
+                        <button onclick="proceedToCreator()" class="mt-3 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">Przejdź do tworzenia strony</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Site Creator -->
+        <div id="site-creator" class="hidden fade-in">
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Utwórz nową stronę</h2>
+                        <button onclick="showTemplateSelection()" class="text-gray-600 hover:text-gray-800">← Zmień szablon</button>
+                    </div>
+
+                    <div id="current-template-info" class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
+                        <p class="text-gray-700"><strong>Wybrany szablon:</strong> <span id="current-template-name"></span></p>
+                    </div>
+
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <!-- Form Section -->
+                        <div>
+                            <form onsubmit="handleSiteCreation(event)" class="space-y-6" id="site-creation-form">
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Tytuł strony *</label>
+                                    <input type="text" required class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="site-title" oninput="updatePreview()">
+                                </div>
+
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Motto/Slogan</label>
+                                    <input type="text" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="site-slogan" oninput="updatePreview()">
+                                </div>
+
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Zdjęcie główne</label>
+                                    <input type="file" accept="image/*" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="cover-image" onchange="handleImageUpload('cover')">
+                                </div>
+
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">O nas *</label>
+                                    <textarea required rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="about-text" oninput="updatePreview()"></textarea>
+                                </div>
+
+                                <!-- Dynamic fields based on template -->
+                                <div id="template-specific-fields"></div>
+
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-gray-700 text-sm font-bold mb-2">Godziny otwarcia</label>
+                                        <textarea rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="opening-hours" placeholder="Pon-Pt: 09:00-17:00" oninput="updatePreview()"></textarea>
+                                    </div>
+                                    <div id="pricing-field">
+                                        <label class="block text-gray-700 text-sm font-bold mb-2">Cennik</label>
+                                        <textarea rows="3" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="ticket-prices" placeholder="Dorośli: 20 zł" oninput="updatePreview()"></textarea>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Adres</label>
+                                    <textarea rows="2" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="address" oninput="updatePreview()"></textarea>
+                                </div>
+
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-gray-700 text-sm font-bold mb-2">Telefon</label>
+                                        <input type="tel" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="phone" oninput="updatePreview()">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 text-sm font-bold mb-2">E-mail</label>
+                                        <input type="email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="contact-email" oninput="updatePreview()">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Media społecznościowe</label>
+                                    <div class="grid md:grid-cols-2 gap-2">
+                                        <input type="url" placeholder="Facebook URL" class="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="facebook">
+                                        <input type="url" placeholder="Instagram URL" class="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="instagram">
+                                        <input type="url" placeholder="Twitter URL" class="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="twitter">
+                                        <input type="url" placeholder="Strona www" class="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="website">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition text-lg font-semibold">Stwórz stronę i wyślij do akceptacji</button>
+                            </form>
+                        </div>
+
+                        <!-- Preview Section -->
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4">Podgląd strony</h3>
+                            <div class="site-preview rounded-lg p-4" id="site-preview">
+                                <div class="text-center text-gray-400">
+                                    <div class="text-4xl mb-2">👁️</div>
+                                    <p>Wypełniaj formularz, a tutaj zobaczysz podgląd swojej strony</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="admin-panel" class="hidden fade-in">
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Panel Administratora</h2>
+                        <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Wyloguj się</button>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-yellow-100 p-6 rounded-lg">
+                            <h3 class="text-lg font-semibold text-yellow-800">Oczekujące</h3>
+                            <p class="text-3xl font-bold text-yellow-600" id="pending-count">0</p>
+                        </div>
+                        <div class="bg-green-100 p-6 rounded-lg">
+                            <h3 class="text-lg font-semibold text-green-800">Opublikowane</h3>
+                            <p class="text-3xl font-bold text-green-600" id="active-count">0</p>
+                        </div>
+                        <div class="bg-blue-100 p-6 rounded-lg">
+                            <h3 class="text-lg font-semibold text-blue-800">Użytkownicy</h3>
+                            <p class="text-3xl font-bold text-blue-600" id="users-count">0</p>
+                        </div>
+                    </div>
+
+                    <div class="tabs mb-6">
+                        <button onclick="showAdminTab('pending')" class="admin-tab active px-4 py-2 mr-2 bg-yellow-600 text-white rounded">Oczekujące akceptacji</button>
+                        <button onclick="showAdminTab('approved')" class="admin-tab px-4 py-2 mr-2 bg-gray-300 text-gray-700 rounded">Opublikowane strony</button>
+                        <button onclick="showAdminTab('users')" class="admin-tab px-4 py-2 bg-gray-300 text-gray-700 rounded">Użytkownicy</button>
+                    </div>
+
+                    <div id="admin-pending" class="admin-tab-content">
+                        <h3 class="text-xl font-semibold mb-4">Strony oczekujące na akceptację</h3>
+                        <div id="pending-sites-list" class="space-y-4"></div>
+                    </div>
+
+                    <div id="admin-approved" class="admin-tab-content hidden">
+                        <h3 class="text-xl font-semibold mb-4">Opublikowane strony</h3>
+                        <div id="approved-sites-list" class="space-y-4"></div>
+                    </div>
+
+                    <div id="admin-users" class="admin-tab-content hidden">
+                        <h3 class="text-xl font-semibold mb-4">Zarejestrowani użytkownicy</h3>
+                        <div id="users-list" class="space-y-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generated Site Display -->
+        <div id="generated-site" class="hidden">
+            <div id="site-content"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // Application State
+        let currentUser = null;
+        let users = [];
+        let sites = [];
+        let currentView = 'welcome';
+        let selectedTemplate = null;
+
+        // Template configurations
+        const templates = {
+            museum: {
+                name: 'Muzeum',
+                fields: [
+                    { id: 'collections', label: 'Kolekcje', type: 'textarea', placeholder: 'Opisz swoje kolekcje...' },
+                    { id: 'exhibitions', label: 'Wystawy', type: 'events', placeholder: 'Dodaj wystawy...' }
+                ]
+            },
+            ngo: {
+                name: 'Organizacja NGO',
+                fields: [
+                    { id: 'mission', label: 'Misja', type: 'textarea', placeholder: 'Nasza misja to...' },
+                    { id: 'projects', label: 'Projekty', type: 'featured', placeholder: 'Opisz swoje projekty...' },
+                    { id: 'support', label: 'Jak wspierać', type: 'textarea', placeholder: 'Sposoby wsparcia organizacji...' }
+                ]
+            },
+            business: {
+                name: 'Działalność',
+                fields: [
+                    { id: 'services', label: 'Usługi', type: 'featured', placeholder: 'Nasze usługi...' },
+                    { id: 'portfolio', label: 'Portfolio', type: 'textarea', placeholder: 'Realizowane projekty...' }
+                ]
+            },
+            cultural: {
+                name: 'Kultura',
+                fields: [
+                    { id: 'program', label: 'Program', type: 'events', placeholder: 'Dodaj wydarzenia...' },
+                    { id: 'artists', label: 'Artyści', type: 'featured', placeholder: 'Współpracujący artyści...' }
+                ]
+            },
+            educational: {
+                name: 'Edukacja',
+                fields: [
+                    { id: 'courses', label: 'Kursy/Zajęcia', type: 'featured', placeholder: 'Oferowane kursy...' },
+                    { id: 'teachers', label: 'Kadra', type: 'textarea', placeholder: 'Nasz zespół...' }
+                ]
+            },
+            personal: {
+                name: 'Portfolio',
+                fields: [
+                    { id: 'skills', label: 'Umiejętności', type: 'featured', placeholder: 'Moje umiejętności...' },
+                    { id: 'experience', label: 'Doświadczenie', type: 'textarea', placeholder: 'Moje doświadczenie zawodowe...' }
+                ]
+            }
+        };
+
+        // Initialize application
+        function init() {
+            loadInitialData();
+            
+            // Set up username preview
+            document.getElementById('register-username').addEventListener('input', function() {
+                const username = this.value || 'nazwa';
+                document.getElementById('url-preview').textContent = `${username}.adapa.org.pl`;
+            });
+        }
+
+        function loadInitialData() {
+            // Administrator
+            users.push({
+                id: 1,
+                name: 'Administrator ADAPA',
+                email: 'admin@adapa.org.pl',
+                username: 'admin',
+                password: 'admin2024',
+                role: 'admin',
+                created_at: new Date()
+            });
+
+            // Sample user with approved site
+            users.push({
+                id: 2,
+                name: 'Muzeum Sztuki Współczesnej',
+                email: 'kontakt@muzeum.pl',
+                username: 'muzeum-sztuki',
+                password: '123456',
+                role: 'user',
+                created_at: new Date()
+            });
+
+            // Sample approved site
+            sites.push({
+                id: 1,
+                user_id: 2,
+                template: 'museum',
+                title: 'Muzeum Sztuki Współczesnej',
+                slogan: 'Odkrywaj przyszłość sztuki',
+                about: 'Jesteśmy nowoczesną instytucją kultury, która prezentuje najciekawsze dzieła sztuki współczesnej. Nasze zbiory obejmują prace polskich i zagranicznych artystów.',
+                collections: 'Posiadamy ponad 500 dzieł sztuki współczesnej, w tym obrazy, rzeźby, instalacje i sztukę cyfrową.',
+                exhibitions: [
+                    {title: 'Nowa Generacja', date: '2024-12-01'},
+                    {title: 'Sztuka Cyfrowa', date: '2024-12-15'}
+                ],
+                opening_hours: 'Wtorek-Niedziela: 10:00-18:00\nPoniedziałek: zamknięte',
+                ticket_prices: 'Normalny: 25 zł\nUlgowy: 15 zł\nRodzinny: 60 zł',
+                address: 'ul. Nowoczesna 15, 00-001 Warszawa',
+                phone: '+48 22 123 4567',
+                contact_email: 'info@muzeum.pl',
+                social_media: {
+                    facebook: 'https://facebook.com/muzeumsztuki',
+                    instagram: 'https://instagram.com/muzeumsztuki',
+                    twitter: 'https://twitter.com/muzeumsztuki',
+                    website: 'https://muzeumsztuki.pl'
+                },
+                status: 'approved',
+                created_at: new Date(),
+                approved_at: new Date()
+            });
+        }
+
+        // Navigation functions
+        function showWelcome() {
+            hideAllScreens();
+            document.getElementById('welcome-screen').classList.remove('hidden');
+            currentView = 'welcome';
+        }
+
+        function showLogin() {
+            hideAllScreens();
+            document.getElementById('login-form').classList.remove('hidden');
+            currentView = 'login';
+        }
+
+        function showRegister() {
+            hideAllScreens();
+            document.getElementById('register-form').classList.remove('hidden');
+            currentView = 'register';
+        }
+
+        function showDashboard() {
+            hideAllScreens();
+            document.getElementById('user-dashboard').classList.remove('hidden');
+            updateDashboard();
+            currentView = 'dashboard';
+        }
+
+        function showTemplateSelection() {
+            hideAllScreens();
+            document.getElementById('template-selection').classList.remove('hidden');
+            currentView = 'template-selection';
+        }
+
+        function showSiteCreator() {
+            hideAllScreens();
+            document.getElementById('site-creator').classList.remove('hidden');
+            updateTemplateFields();
+            currentView = 'site-creator';
+        }
+
+        function showAdminPanel() {
+            hideAllScreens();
+            document.getElementById('admin-panel').classList.remove('hidden');
+            updateAdminPanel();
+            currentView = 'admin';
+        }
+
+        function hideAllScreens() {
+            const screens = ['welcome-screen', 'login-form', 'register-form', 'user-dashboard', 'template-selection', 'site-creator', 'admin-panel', 'generated-site'];
+            screens.forEach(screen => {
+                document.getElementById(screen).classList.add('hidden');
+            });
+        }
+
+        // Authentication
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                updateNavigation();
+                
+                if (user.role === 'admin') {
+                    showAdminPanel();
+                } else {
+                    showDashboard();
+                }
+                
+                alert('Zalogowano pomyślnie!');
+            } else {
+                alert('Nieprawidłowy e-mail lub hasło!');
+            }
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            
+            // Check if user already exists
+            if (users.find(u => u.email === email || u.username === username)) {
+                alert('Ten e-mail lub nazwa użytkownika są już zajęte!');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                id: users.length + 1,
+                name: name,
+                email: email,
+                username: username,
+                password: password,
+                role: 'user',
+                created_at: new Date()
+            };
+            
+            users.push(newUser);
+            currentUser = newUser;
+            updateNavigation();
+            showDashboard();
+            alert('Rejestracja przebiegła pomyślnie! Witamy w Fundacji ADAPA!');
+        }
+
+        function logout() {
+            currentUser = null;
+            selectedTemplate = null;
+            updateNavigation();
+            showWelcome();
+        }
+
+        function updateNavigation() {
+            const navButtons = document.getElementById('nav-buttons');
+            
+            if (currentUser) {
+                if (currentUser.role === 'admin') {
+                    navButtons.innerHTML = `
+                        <button onclick="showAdminPanel()" class="bg-white bg-opacity-20 px-4 py-2 rounded mr-2 hover:bg-opacity-30 transition">Panel Admina</button>
+                        <button onclick="logout()" class="bg-white bg-opacity-20 px-4 py-2 rounded hover:bg-opacity-30 transition">Wyloguj się</button>
+                    `;
+                } else {
+                    navButtons.innerHTML = `
+                        <span class="bg-white bg-opacity-20 px-4 py-2 rounded mr-2">${currentUser.name}</span>
+                        <button onclick="showDashboard()" class="bg-white bg-opacity-20 px-4 py-2 rounded mr-2 hover:bg-opacity-30 transition">Moje strony</button>
+                        <button onclick="logout()" class="bg-white bg-opacity-20 px-4 py-2 rounded hover:bg-opacity-30 transition">Wyloguj się</button>
+                    `;
+                }
+            } else {
+                navButtons.innerHTML = `
+                    <button onclick="showLogin()" class="bg-white bg-opacity-20 px-4 py-2 rounded mr-2 hover:bg-opacity-30 transition">Zaloguj się</button>
+                    <button onclick="showRegister()" class="bg-white bg-opacity-20 px-4 py-2 rounded hover:bg-opacity-30 transition">Zarejestruj się</button>
+                `;
+            }
+        }
+
+        // Template selection
+        function selectTemplate(templateId) {
+            selectedTemplate = templateId;
+            
+            // Update visual selection
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // Show selected template info
+            document.getElementById('selected-template').classList.remove('hidden');
+            document.getElementById('selected-template-name').textContent = templates[templateId].name;
+        }
+
+        function proceedToCreator() {
+            showSiteCreator();
+        }
+
+        function updateTemplateFields() {
+            if (!selectedTemplate) return;
+            
+            const template = templates[selectedTemplate];
+            document.getElementById('current-template-name').textContent = template.name;
+            
+            const fieldsContainer = document.getElementById('template-specific-fields');
+            fieldsContainer.innerHTML = '';
+            
+            template.fields.forEach(field => {
+                const fieldDiv = document.createElement('div');
+                
+                if (field.type === 'textarea') {
+                    fieldDiv.innerHTML = `
+                        <label class="block text-gray-700 text-sm font-bold mb-2">${field.label}</label>
+                        <textarea rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" id="${field.id}" placeholder="${field.placeholder}" oninput="updatePreview()"></textarea>
+                    `;
+                } else if (field.type === 'featured') {
+                    fieldDiv.innerHTML = `
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">${field.label}</label>
+                            <div id="${field.id}-items" class="space-y-3">
+                                <div class="flex gap-2">
+                                    <input type="text" placeholder="Tytuł" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${field.id}-title" oninput="updatePreview()">
+                                    <input type="text" placeholder="Opis" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${field.id}-desc" oninput="updatePreview()">
+                                </div>
+                            </div>
+                            <button type="button" onclick="addTemplateItem('${field.id}')" class="mt-2 text-blue-600 hover:text-blue-800">+ Dodaj ${field.label}</button>
+                        </div>
+                    `;
+                } else if (field.type === 'events') {
+                    fieldDiv.innerHTML = `
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">${field.label}</label>
+                            <div id="${field.id}-items" class="space-y-3">
+                                <div class="flex gap-2">
+                                    <input type="text" placeholder="Nazwa wydarzenia" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${field.id}-title" oninput="updatePreview()">
+                                    <input type="date" class="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${field.id}-date" oninput="updatePreview()">
+                                </div>
+                            </div>
+                            <button type="button" onclick="addEventItem('${field.id}')" class="mt-2 text-blue-600 hover:text-blue-800">+ Dodaj wydarzenie</button>
+                        </div>
+                    `;
+                }
+                
+                fieldsContainer.appendChild(fieldDiv);
+            });
+
+            // Adjust pricing field label based on template
+            const pricingField = document.getElementById('pricing-field');
+            if (selectedTemplate === 'ngo') {
+                pricingField.querySelector('label').textContent = 'Jak wspierać finansowo';
+                pricingField.querySelector('textarea').placeholder = 'Sposoby wsparcia...';
+            } else if (selectedTemplate === 'business') {
+                pricingField.querySelector('label').textContent = 'Cennik usług';
+                pricingField.querySelector('textarea').placeholder = 'Konsultacja: 100 zł/h';
+            } else {
+                pricingField.querySelector('label').textContent = 'Cennik';
+                pricingField.querySelector('textarea').placeholder = 'Dorośli: 20 zł';
+            }
+        }
+
+        function addTemplateItem(fieldId) {
+            const container = document.getElementById(`${fieldId}-items`);
+            const newItem = document.createElement('div');
+            newItem.className = 'flex gap-2';
+            newItem.innerHTML = `
+                <input type="text" placeholder="Tytuł" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${fieldId}-title" oninput="updatePreview()">
+                <input type="text" placeholder="Opis" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${fieldId}-desc" oninput="updatePreview()">
+                <button type="button" onclick="this.parentElement.remove(); updatePreview();" class="text-red-600 hover:text-red-800">×</button>
+            `;
+            container.appendChild(newItem);
+        }
+
+        function addEventItem(fieldId) {
+            const container = document.getElementById(`${fieldId}-items`);
+            const newItem = document.createElement('div');
+            newItem.className = 'flex gap-2';
+            newItem.innerHTML = `
+                <input type="text" placeholder="Nazwa wydarzenia" class="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${fieldId}-title" oninput="updatePreview()">
+                <input type="date" class="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${fieldId}-date" oninput="updatePreview()">
+                <button type="button" onclick="this.parentElement.remove(); updatePreview();" class="text-red-600 hover:text-red-800">×</button>
+            `;
+            container.appendChild(newItem);
+        }
+
+        // Dashboard functions
+        function updateDashboard() {
+            document.getElementById('user-name-display').textContent = currentUser.name;
+            
+            const userSites = sites.filter(site => site.user_id === currentUser.id);
+            
+            if (userSites.length === 0) {
+                document.getElementById('no-sites').classList.remove('hidden');
+                document.getElementById('existing-sites').classList.add('hidden');
+            } else {
+                document.getElementById('no-sites').classList.add('hidden');
+                document.getElementById('existing-sites').classList.remove('hidden');
+                
+                const sitesList = document.getElementById('sites-list');
+                sitesList.innerHTML = userSites.map(site => `
+                    <div class="border rounded-lg p-4 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-semibold">${site.title}</h4>
+                            <p class="text-sm text-gray-600">${currentUser.username}.adapa.org.pl</p>
+                            <p class="text-xs text-gray-500">Szablon: ${templates[site.template].name}</p>
+                            <span class="inline-block px-2 py-1 rounded text-xs ${
+                                site.status === 'approved' ? 'bg-green-100 text-green-800' :
+                                site.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                                'bg-yellow-100 text-yellow-800'
+                            }">
+                                ${site.status === 'approved' ? 'Opublikowana' : 
+                                  site.status === 'rejected' ? 'Odrzucona' : 'Oczekuje na akceptację'}
+                            </span>
+                        </div>
+                        <div class="flex gap-2">
+                            ${site.status === 'approved' ? 
+                                `<button onclick="viewSite(${site.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">Pokaż</button>` : ''
+                            }
+                            ${site.status === 'rejected' ? 
+                                `<button onclick="editSite(${site.id})" class="bg-orange-500 text-white px-3 py-1 rounded text-sm hover:bg-orange-600">Edytuj</button>` : ''
+                            }
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Site creation functions
+        function handleImageUpload(type) {
+            const input = document.getElementById(`${type}-image`);
+            const file = input.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    updatePreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updatePreview() {
+            const title = document.getElementById('site-title').value;
+            const slogan = document.getElementById('site-slogan').value;
+            const about = document.getElementById('about-text').value;
+            const openingHours = document.getElementById('opening-hours').value;
+            const ticketPrices = document.getElementById('ticket-prices').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+            const contactEmail = document.getElementById('contact-email').value;
+
+            const preview = document.getElementById('site-preview');
+            
+            if (!title && !about) {
+                preview.innerHTML = `
+                    <div class="text-center text-gray-400">
+                        <div class="text-4xl mb-2">👁️</div>
+                        <p>Wypełniaj formularz, a tutaj zobaczysz podgląd swojej strony</p>
+                    </div>
+                `;
+                preview.classList.remove('has-content');
+                return;
+            }
+
+            // Collect template-specific data
+            const templateData = {};
+            if (selectedTemplate && templates[selectedTemplate]) {
+                templates[selectedTemplate].fields.forEach(field => {
+                    if (field.type === 'textarea') {
+                        const element = document.getElementById(field.id);
+                        if (element) {
+                            templateData[field.id] = element.value;
+                        }
+                    } else if (field.type === 'featured' || field.type === 'events') {
+                        const titles = document.querySelectorAll(`.${field.id}-title`);
+                        const items = [];
+                        titles.forEach((titleEl, index) => {
+                            const descEl = document.querySelectorAll(`.${field.id}-desc, .${field.id}-date`)[index];
+                            if (titleEl.value || (descEl && descEl.value)) {
+                                items.push({
+                                    title: titleEl.value,
+                                    [field.type === 'events' ? 'date' : 'desc']: descEl ? descEl.value : ''
+                                });
+                            }
+                        });
+                        templateData[field.id] = items;
+                    }
+                });
+            }
+
+            preview.classList.add('has-content');
+            preview.innerHTML = generateSiteHTML({
+                title: title || 'Tytuł strony',
+                slogan: slogan || 'Motto strony',
+                about: about || 'Opis organizacji...',
+                opening_hours: openingHours,
+                ticket_prices: ticketPrices,
+                address: address,
+                phone: phone,
+                contact_email: contactEmail,
+                template: selectedTemplate,
+                ...templateData
+            }, true);
+        }
+
+        function handleSiteCreation(event) {
+            event.preventDefault();
+            
+            const formData = {
+                template: selectedTemplate,
+                title: document.getElementById('site-title').value,
+                slogan: document.getElementById('site-slogan').value,
+                about: document.getElementById('about-text').value,
+                opening_hours: document.getElementById('opening-hours').value,
+                ticket_prices: document.getElementById('ticket-prices').value,
+                address: document.getElementById('address').value,
+                phone: document.getElementById('phone').value,
+                contact_email: document.getElementById('contact-email').value,
+                social_media: {
+                    facebook: document.getElementById('facebook').value,
+                    instagram: document.getElementById('instagram').value,
+                    twitter: document.getElementById('twitter').value,
+                    website: document.getElementById('website').value
+                }
+            };
+
+            // Collect template-specific data
+            if (selectedTemplate && templates[selectedTemplate]) {
+                templates[selectedTemplate].fields.forEach(field => {
+                    if (field.type === 'textarea') {
+                        const element = document.getElementById(field.id);
+                        if (element) {
+                            formData[field.id] = element.value;
+                        }
+                    } else if (field.type === 'featured' || field.type === 'events') {
+                        const titles = document.querySelectorAll(`.${field.id}-title`);
+                        const items = [];
+                        titles.forEach((titleEl, index) => {
+                            const descEl = document.querySelectorAll(`.${field.id}-desc, .${field.id}-date`)[index];
+                            if (titleEl.value || (descEl && descEl.value)) {
+                                items.push({
+                                    title: titleEl.value,
+                                    [field.type === 'events' ? 'date' : 'desc']: descEl ? descEl.value : ''
+                                });
+                            }
+                        });
+                        formData[field.id] = items;
+                    }
+                });
+            }
+
+            // Create new site
+            const newSite = {
+                id: sites.length + 1,
+                user_id: currentUser.id,
+                ...formData,
+                status: 'pending',
+                created_at: new Date()
+            };
+
+            sites.push(newSite);
+            
+            alert('Strona została utworzona! Zostanie opublikowana po akceptacji przez administratora.');
+            showDashboard();
+        }
+
+        // Admin panel functions
+        function updateAdminPanel() {
+            const pendingCount = sites.filter(site => site.status === 'pending').length;
+            const activeCount = sites.filter(site => site.status === 'approved').length;
+            const usersCount = users.filter(user => user.role === 'user').length;
+
+            document.getElementById('pending-count').textContent = pendingCount;
+            document.getElementById('active-count').textContent = activeCount;
+            document.getElementById('users-count').textContent = usersCount;
+
+            updatePendingSites();
+            updateApprovedSites();
+            updateUsersList();
+        }
+
+        function updatePendingSites() {
+            const pendingSites = sites.filter(site => site.status === 'pending');
+            const container = document.getElementById('pending-sites-list');
+            
+            if (pendingSites.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">Brak stron oczekujących na akceptację.</p>';
+                return;
+            }
+
+            container.innerHTML = pendingSites.map(site => {
+                const user = users.find(u => u.id === site.user_id);
+                return `
+                    <div class="border rounded-lg p-6 bg-yellow-50">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-xl font-semibold">${site.title}</h4>
+                                <p class="text-gray-600">${user.name} (${user.username})</p>
+                                <p class="text-sm text-gray-500">Szablon: ${templates[site.template].name}</p>
+                                <p class="text-sm text-gray-500">Zgłoszono: ${site.created_at.toLocaleDateString('pl-PL')}</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="previewSite(${site.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">Podgląd</button>
+                                <button onclick="approveSite(${site.id})" class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600">Akceptuj</button>
+                                <button onclick="rejectSite(${site.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Odrzuć</button>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-700">
+                            <p><strong>Motto:</strong> ${site.slogan || 'Nie podano'}</p>
+                            <p><strong>Opis:</strong> ${site.about.substring(0, 200)}${site.about.length > 200 ? '...' : ''}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateApprovedSites() {
+            const approvedSites = sites.filter(site => site.status === 'approved');
+            const container = document.getElementById('approved-sites-list');
+            
+            container.innerHTML = approvedSites.map(site => {
+                const user = users.find(u => u.id === site.user_id);
+                return `
+                    <div class="border rounded-lg p-4 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-semibold">${site.title}</h4>
+                            <p class="text-sm text-gray-600">${user.name} - ${user.username}.adapa.org.pl</p>
+                            <p class="text-xs text-gray-500">Szablon: ${templates[site.template].name}</p>
+                            <p class="text-xs text-gray-500">Opublikowano: ${site.approved_at ? site.approved_at.toLocaleDateString('pl-PL') : 'Nieznana data'}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="viewSite(${site.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">Pokaż</button>
+                            <button onclick="unpublishSite(${site.id})" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Wycofaj</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateUsersList() {
+            const regularUsers = users.filter(user => user.role === 'user');
+            const container = document.getElementById('users-list');
+            
+            container.innerHTML = regularUsers.map(user => {
+                const userSites = sites.filter(site => site.user_id === user.id);
+                return `
+                    <div class="border rounded-lg p-4 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-semibold">${user.name}</h4>
+                            <p class="text-sm text-gray-600">${user.email} - ${user.username}</p>
+                            <p class="text-xs text-gray-500">Rejestracja: ${user.created_at.toLocaleDateString('pl-PL')} | Stron: ${userSites.length}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="viewUserSites(${user.id})" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">Zobacz strony</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function showAdminTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('bg-yellow-600', 'bg-green-600', 'bg-blue-600', 'text-white');
+                tab.classList.add('bg-gray-300', 'text-gray-700');
+            });
+            
+            const activeTab = document.querySelector(`[onclick="showAdminTab('${tabName}')"]`);
+            activeTab.classList.remove('bg-gray-300', 'text-gray-700');
+            
+            if (tabName === 'pending') {
+                activeTab.classList.add('bg-yellow-600', 'text-white');
+            } else if (tabName === 'approved') {
+                activeTab.classList.add('bg-green-600', 'text-white');
+            } else {
+                activeTab.classList.add('bg-blue-600', 'text-white');
+            }
+            
+            // Update content
+            document.querySelectorAll('.admin-tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            document.getElementById(`admin-${tabName}`).classList.remove('hidden');
+        }
+
+        function approveSite(siteId) {
+            const site = sites.find(s => s.id === siteId);
+            if (site) {
+                site.status = 'approved';
+                site.approved_at = new Date();
+                updateAdminPanel();
+                alert('Strona została zaakceptowana i opublikowana!');
+            }
+        }
+
+        function rejectSite(siteId) {
+            const reason = prompt('Podaj powód odrzucenia (wiadomość dla użytkownika):');
+            if (reason) {
+                const site = sites.find(s => s.id === siteId);
+                if (site) {
+                    site.status = 'rejected';
+                    site.rejection_reason = reason;
+                    updateAdminPanel();
+                    alert('Strona została odrzucona.');
+                }
+            }
+        }
+
+        function unpublishSite(siteId) {
+            if (confirm('Czy na pewno chcesz wycofać tę stronę z publikacji?')) {
+                const site = sites.find(s => s.id === siteId);
+                if (site) {
+                    site.status = 'unpublished';
+                    updateAdminPanel();
+                    alert('Strona została wycofana z publikacji.');
+                }
+            }
+        }
+
+        function previewSite(siteId) {
+            viewSite(siteId, true);
+        }
+
+        function viewUserSites(userId) {
+            const user = users.find(u => u.id === userId);
+            const userSites = sites.filter(site => site.user_id === userId);
+            
+            let message = `Strony użytkownika ${user.name} (${user.username}):\n\n`;
+            
+            if (userSites.length === 0) {
+                message += 'Brak utworzonych stron.';
+            } else {
+                userSites.forEach(site => {
+                    const statusText = site.status === 'approved' ? 'Opublikowana' : 
+                                     site.status === 'rejected' ? 'Odrzucona' : 'Oczekuje';
+                    message += `• ${site.title} (${templates[site.template].name}) - ${statusText}\n`;
+                });
+            }
+            
+            alert(message);
+        }
+
+        // Site viewing functions
+        function viewSite(siteId, isPreview = false) {
+            const site = sites.find(s => s.id === siteId);
+            const user = users.find(u => u.id === site.user_id);
+            
+            if (!site || (!isPreview && site.status !== 'approved')) {
+                alert('Strona nie została znaleziona lub nie jest jeszcze opublikowana!');
+                return;
+            }
+
+            hideAllScreens();
+            document.getElementById('generated-site').classList.remove('hidden');
+            document.getElementById('site-content').innerHTML = generateSiteHTML(site, false, user.username);
+            currentView = 'site';
+        }
+
+        function generateSiteHTML(site, isPreview = false, username = 'podglad') {
+            const template = templates[site.template] || { name: 'Podstawowy' };
+            
+            return `
+                <div class="min-h-screen bg-white">
+                    ${!isPreview ? `
+                        <div class="bg-blue-600 text-white p-2 text-center text-sm">
+                            <button onclick="goBack()" class="float-left bg-blue-700 px-3 py-1 rounded text-xs hover:bg-blue-800">← Powrót</button>
+                            🌐 ${username}.adapa.org.pl
+                        </div>
+                    ` : ''}
+                    
+                    <!-- Header -->
+                    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                        <div class="container mx-auto px-4 py-16 text-center">
+                            <h1 class="text-4xl md:text-6xl font-bold mb-4">${site.title}</h1>
+                            ${site.slogan ? `<p class="text-xl md:text-2xl opacity-90">${site.slogan}</p>` : ''}
+                        </div>
+                    </header>
+
+                    <div class="container mx-auto px-4 py-8">
+                        <!-- About Section -->
+                        <section class="mb-12">
+                            <div class="bg-white rounded-lg shadow-lg p-8">
+                                <h2 class="text-3xl font-bold mb-6 text-center">${getAboutTitle(site.template)}</h2>
+                                <p class="text-lg leading-relaxed text-gray-700">${site.about}</p>
+                            </div>
+                        </section>
+
+                        ${generateTemplateSpecificContent(site)}
+
+                        <!-- Info Grid -->
+                        <section class="mb-12">
+                            <div class="grid md:grid-cols-2 gap-8">
+                                ${site.opening_hours ? `
+                                    <div class="bg-white rounded-lg shadow-lg p-8">
+                                        <h3 class="text-2xl font-bold mb-4 flex items-center">
+                                            <span class="mr-2">🕒</span> Godziny otwarcia
+                                        </h3>
+                                        <div class="text-gray-700 whitespace-pre-line">${site.opening_hours}</div>
+                                    </div>
+                                ` : ''}
+
+                                ${site.ticket_prices ? `
+                                    <div class="bg-white rounded-lg shadow-lg p-8">
+                                        <h3 class="text-2xl font-bold mb-4 flex items-center">
+                                            <span class="mr-2">${getPriceIcon(site.template)}</span> ${getPriceTitle(site.template)}
+                                        </h3>
+                                        <div class="text-gray-700 whitespace-pre-line">${site.ticket_prices}</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </section>
+
+                        <!-- Contact -->
+                        <section class="mb-12">
+                            <h2 class="text-3xl font-bold mb-8 text-center">Kontakt</h2>
+                            <div class="bg-white rounded-lg shadow-lg p-8">
+                                <div class="grid md:grid-cols-2 gap-8">
+                                    <div>
+                                        ${site.address ? `
+                                            <div class="mb-6">
+                                                <h4 class="font-semibold mb-2 flex items-center">
+                                                    <span class="mr-2">📍</span> Adres
+                                                </h4>
+                                                <p class="text-gray-700">${site.address}</p>
+                                            </div>
+                                        ` : ''}
+
+                                        ${site.phone ? `
+                                            <div class="mb-6">
+                                                <h4 class="font-semibold mb-2 flex items-center">
+                                                    <span class="mr-2">📞</span> Telefon
+                                                </h4>
+                                                <p class="text-gray-700">${site.phone}</p>
+                                            </div>
+                                        ` : ''}
+
+                                        ${site.contact_email ? `
+                                            <div class="mb-6">
+                                                <h4 class="font-semibold mb-2 flex items-center">
+                                                    <span class="mr-2">✉️</span> E-mail
+                                                </h4>
+                                                <p class="text-gray-700">${site.contact_email}</p>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-semibold mb-4 flex items-center">
+                                            <span class="mr-2">🌐</span> Media społecznościowe
+                                        </h4>
+                                        <div class="space-y-3">
+                                            ${site.social_media && site.social_media.facebook ? `
+                                                <a href="${site.social_media.facebook}" target="_blank" class="flex items-center text-blue-600 hover:text-blue-800">
+                                                    <span class="mr-2">📘</span> Facebook
+                                                </a>
+                                            ` : ''}
+                                            ${site.social_media && site.social_media.instagram ? `
+                                                <a href="${site.social_media.instagram}" target="_blank" class="flex items-center text-pink-600 hover:text-pink-800">
+                                                    <span class="mr-2">📷</span> Instagram
+                                                </a>
+                                            ` : ''}
+                                            ${site.social_media && site.social_media.twitter ? `
+                                                <a href="${site.social_media.twitter}" target="_blank" class="flex items-center text-blue-400 hover:text-blue-600">
+                                                    <span class="mr-2">🐦</span> Twitter
+                                                </a>
+                                            ` : ''}
+                                            ${site.social_media && site.social_media.website ? `
+                                                <a href="${site.social_media.website}" target="_blank" class="flex items-center text-green-600 hover:text-green-800">
+                                                    <span class="mr-2">🌐</span> Strona www
+                                                </a>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Footer -->
+                    <footer class="bg-gray-800 text-white text-center py-8">
+                        <div class="container mx-auto px-4">
+                            <p>&copy; 2024 ${site.title}. Wszystkie prawa zastrzeżone.</p>
+                            <p class="text-sm mt-2 opacity-75">Strona stworzona dzięki <strong>Fundacji ADAPA</strong></p>
+                        </div>
+                    </footer>
+                </div>
+            `;
+        }
+
+        function getAboutTitle(templateType) {
+            const titles = {
+                'museum': 'O muzeum',
+                'ngo': 'O organizacji',
+                'business': 'O firmie',
+                'cultural': 'O ośrodku',
+                'educational': 'O placówce',
+                'personal': 'O mnie'
+            };
+            return titles[templateType] || 'O nas';
+        }
+
+        function getPriceIcon(templateType) {
+            const icons = {
+                'museum': '🎫',
+                'ngo': '💝',
+                'business': '💰',
+                'cultural': '🎟️',
+                'educational': '💳',
+                'personal': '💼'
+            };
+            return icons[templateType] || '💰';
+        }
+
+        function getPriceTitle(templateType) {
+            const titles = {
+                'museum': 'Ceny biletów',
+                'ngo': 'Jak nas wspierać',
+                'business': 'Cennik usług',
+                'cultural': 'Cennik',
+                'educational': 'Opłaty',
+                'personal': 'Stawki'
+            };
+            return titles[templateType] || 'Cennik';
+        }
+
+        function generateTemplateSpecificContent(site) {
+            let content = '';
+            
+            if (!site.template || !templates[site.template]) return content;
+            
+            templates[site.template].fields.forEach(field => {
+                const fieldData = site[field.id];
+                
+                if (!fieldData) return;
+                
+                if (field.type === 'textarea' && fieldData.trim()) {
+                    content += `
+                        <section class="mb-12">
+                            <div class="bg-white rounded-lg shadow-lg p-8">
+                                <h2 class="text-3xl font-bold mb-6 text-center">${field.label}</h2>
+                                <p class="text-lg leading-relaxed text-gray-700">${fieldData}</p>
+                            </div>
+                        </section>
+                    `;
+                } else if (field.type === 'featured' && Array.isArray(fieldData) && fieldData.length > 0) {
+                    content += `
+                        <section class="mb-12">
+                            <h2 class="text-3xl font-bold mb-8 text-center">${field.label}</h2>
+                            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                ${fieldData.map(item => `
+                                    <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                                        <div class="text-4xl mb-4">${getTemplateIcon(site.template)}</div>
+                                        <h3 class="text-xl font-semibold mb-2">${item.title}</h3>
+                                        <p class="text-gray-600">${item.desc}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </section>
+                    `;
+                } else if (field.type === 'events' && Array.isArray(fieldData) && fieldData.length > 0) {
+                    content += `
+                        <section class="mb-12">
+                            <h2 class="text-3xl font-bold mb-8 text-center">${field.label}</h2>
+                            <div class="bg-white rounded-lg shadow-lg p-8">
+                                ${fieldData.map(event => `
+                                    <div class="flex items-center justify-between py-4 border-b last:border-b-0">
+                                        <div>
+                                            <h3 class="text-lg font-semibold">${event.title}</h3>
+                                        </div>
+                                        <div class="text-blue-600 font-semibold">
+                                            ${event.date ? new Date(event.date).toLocaleDateString('pl-PL') : ''}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </section>
+                    `;
+                }
+            });
+            
+            return content;
+        }
+
+        function getTemplateIcon(templateType) {
+            const icons = {
+                'museum': '🏛️',
+                'ngo': '🤝',
+                'business': '💼',
+                'cultural': '🎭',
+                'educational': '📚',
+                'personal': '👤'
+            };
+            return icons[templateType] || '⭐';
+        }
+
+        function goBack() {
+            if (currentUser) {
+                if (currentUser.role === 'admin') {
+                    showAdminPanel();
+                } else {
+                    showDashboard();
+                }
+            } else {
+                showWelcome();
+            }
+        }
+
+        function editSite(siteId) {
+            alert('Funkcja edycji będzie dostępna wkrótce. Na razie utwórz nową stronę.');
+        }
+
+        // Initialize the application
+        init();
+    </script>
+</body>
+</html>
